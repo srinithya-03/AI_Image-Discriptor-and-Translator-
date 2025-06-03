@@ -64,11 +64,13 @@ else:
         st.write("Please enter a prompt.")
 
 voice_choice = st.selectbox("Enable voice output?", ["No", "Yes"])
-if voice_choice == "Yes" and 'description' in st.session_state:
-    generate_audio()
-    st.audio("1.mp3", format='audio/mp3')
-elif voice_choice != "None" and 'description' not in st.session_state:
-    st.warning("Please upload an image and generate a description first before using voice features.")
+
+if voice_choice == "Yes":
+    if 'description' in st.session_state:
+        generate_audio()
+        st.audio("1.mp3", format='audio/mp3')
+    else:
+        st.warning("Please upload an image and generate a description first before using voice features.")
 
 lang_choice = st.selectbox("Choose a Language to Translate:", ["None", "English", "Hindi", "Odia", "Telugu", "Tamil", "Punjabi", "Malayalam", "Marathi"])
 if lang_choice != "None" and 'description' in st.session_state:
