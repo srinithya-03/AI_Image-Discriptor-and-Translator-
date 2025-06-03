@@ -3,3 +3,4 @@ Pillow
 google-generativeai
 pyttsx3
 deep-translator
+gTTS
