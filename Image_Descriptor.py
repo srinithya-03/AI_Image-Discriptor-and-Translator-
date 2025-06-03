@@ -12,17 +12,14 @@ st.write("Upload an image and enter a prompt. The model will generate a descript
 uploaded_file = st.file_uploader("Choose an image...", type="jpg")
 user_prompt = st.text_input("Enter your prompt:", value="")
 
-def generate_audio(i):
+from gtts import gTTS
+
+def generate_audio():
     if 'description' not in st.session_state:
         return
-    audio = pyttsx3.init()
-    audio.setProperty('rate', 150)
-    audio.setProperty('volume', 1.0)
-    voices = audio.getProperty('voices')
-    if len(voices) > i:
-        audio.setProperty('voice', voices[i].id)
-    audio.save_to_file(st.session_state.description, "1.mp3")
-    audio.runAndWait()
+    tts = gTTS(text=st.session_state.description, lang='en')
+    tts.save("1.mp3")
+
 
 def change_language(language):
     if 'description' not in st.session_state:
@@ -66,9 +63,9 @@ else:
     if not user_prompt:
         st.write("Please enter a prompt.")
 
-voice_choice = st.selectbox("Choose a voice:", ["None", "Male", "Female"])
-if voice_choice != "None" and 'description' in st.session_state:
-    generate_audio(0 if voice_choice == "Male" else 1)
+voice_choice = st.selectbox("Enable voice output?", ["No", "Yes"])
+if voice_choice == "Yes" and 'description' in st.session_state:
+    generate_audio()
     st.audio("1.mp3", format='audio/mp3')
 elif voice_choice != "None" and 'description' not in st.session_state:
     st.warning("Please upload an image and generate a description first before using voice features.")
